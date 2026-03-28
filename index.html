@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Arsenal</title>
+    <!-- Brand Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    
+    <!-- Modern Fonts: Inter mimicking San Francisco -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link id="theme-stylesheet" rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Subtle gradient background -->
+    <div class="apple-bg-effect"></div>
+
+    <!-- Ambient Geometry Watermarks -->
+    <div class="bg-watermark bg-watermark-1">
+        <img src="assets/logo.png" alt="" />
+    </div>
+    <div class="bg-watermark bg-watermark-2">
+        <img src="assets/logo.png" alt="" />
+    </div>
+
+    <!-- Floating Overlay System -->
+    <div id="config-overlay" class="config-overlay">
+        <!-- Sidebar: Global Targets now acts as Floating Panel -->
+        <aside id="config-panel" class="sidebar frosted-glass">
+            <div class="sidebar-header">
+                <h1 class="logo">Cyber <span>Menu</span></h1>
+                <p class="subtitle">Global Variables</p>
+                <div class="header-divider"></div>
+            </div>
+            
+            <div class="global-state-panel">
+                <h2 class="panel-title">Environment Variables</h2>
+                
+                <div class="input-group">
+                    <label for="target_ip">Target IP</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="target_ip" placeholder="e.g. 10.10.10.5" />
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="interface">Network Interface</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="interface" placeholder="eth0 / tun0 / wlan0" />
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="target_port">Target Port</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="target_port" placeholder="80" />
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="local_ip">Local IP (LHOST)</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="local_ip" placeholder="10.10.14.8" />
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="wordlist">Wordlist Path</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="wordlist" placeholder="/usr/share/wordlists/rockyou.txt" />
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="username">Target Username</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username" placeholder="admin" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <button id="reset-state" class="btn-apple-outline">Reset Environment</button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Main Application -->
+    <div class="app-container">
+        <!-- Main Content: Tool Arsenal -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="brand-container">
+                    <img src="assets/logo.png" alt="Cyber Arsenal Icon" class="brand-icon">
+                    <div class="logo-main">Cyber <span>Arsenal</span></div>
+                </div>
+                
+                <div class="search-container apple-search frosted-glass">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="search-tools" placeholder="Search commands, tools, or tags..." />
+                </div>
+            </header>
+            
+            <div class="arsenal-container" id="arsenal-container">
+                <!-- Dynamically populated by JS -->
+                <div class="loading-state">
+                    Loading Arsenal Database...
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- The Floating Access Point (Bottom Center) -->
+    <button id="config-fab" class="config-fab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        Environment Target
+    </button>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

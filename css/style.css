@@ -1,0 +1,722 @@
+:root {
+    /* Orca Minimalist Aesthetic */
+    --bg-light: #F8FAFC; 
+    --surface-color: #F1F5F9; /* Sleek cool grey to make 3D folds visible */
+    
+    /* Typography Colors */
+    --apple-text-dark: #0A0A0B; 
+    --apple-text-gray: #64748B;
+    --apple-text-light: #F1F5F9;
+    
+    /* UI Elements */
+    --apple-border: rgba(10, 10, 11, 0.06);
+    --apple-input-bg: #F1F5F9;
+    --apple-blue: #0A192F; 
+    --apple-blue-hover: #112240;
+    
+    /* Code Blocks */
+    --code-bg: #0A0A0B; 
+    --code-text: #F8FAFC;
+    
+    /* Fonts */
+    --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-code: "SF Mono", SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--apple-text-dark);
+    font-family: var(--font-ui);
+    min-height: 100vh;
+    position: relative;
+    letter-spacing: -0.01em;
+}
+
+.apple-bg-effect {
+    display: none; /* No artificial backgrounds, pure space */
+}
+
+/* --- Ambient Geometry Watermarks --- */
+.bg-watermark {
+    position: fixed;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.02; /* Incredibly faint stealth watermark */
+    mix-blend-mode: multiply;
+}
+
+.bg-watermark-1 {
+    top: -15%;
+    right: -10%;
+    transform: rotate(15deg);
+}
+
+.bg-watermark-1 img {
+    width: 900px;
+    height: auto;
+}
+
+.bg-watermark-2 {
+    bottom: -10%;
+    left: -15%;
+    transform: rotate(-20deg);
+}
+
+.bg-watermark-2 img {
+    width: 700px;
+    height: auto;
+}
+
+.app-container {
+    display: block;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    transition: filter 0.5s ease-in-out, transform 1s ease-in-out;
+}
+
+/* --- CONFIG OVERLAY --- */
+.config-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(251, 251, 253, 0.6);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    z-index: 200;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.config-open .config-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+body.config-open {
+    overflow: hidden;
+}
+
+/* --- FAB (Floating Action Button) --- */
+.config-fab {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    background: #1D1D1F;
+    color: #FFF;
+    border: none;
+    border-radius: 0;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    filter: drop-shadow(6px 6px 0px var(--apple-blue));
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.2s ease-out;
+    font-family: var(--font-ui);
+    letter-spacing: -0.01em;
+    clip-path: polygon(2% 0%, 98% 2%, 100% 98%, 0% 100%);
+}
+
+.config-fab:hover {
+    transform: translate(-4px, -4px);
+    filter: drop-shadow(10px 10px 0px var(--apple-blue));
+}
+
+.config-fab:active {
+    transform: translate(0, 0);
+    filter: drop-shadow(0px 0px 0px var(--apple-blue));
+}
+
+.config-fab svg {
+    width: 22px;
+    height: 22px;
+}
+
+body.config-open .config-fab {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    pointer-events: none;
+}
+
+/* Barrel Roll Easter Egg */
+.barrel-roll {
+    animation: roll 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes roll {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- SIDEBAR AS FLOATING MODAL --- */
+.sidebar {
+    width: 400px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 32px;
+    background: var(--surface-color);
+    border: none;
+    border-radius: 0;
+    filter: drop-shadow(12px 12px 0px var(--apple-blue));
+    clip-path: polygon(
+        1% 1%, 99% -1%, 
+        100% calc(100% - 32px), calc(100% - 24px) 100%, 
+        -1% 99%, 2% calc(100% - 20px)
+    );
+    
+    /* Animation origin from bottom right */
+    transform: translateY(40px) scale(0.9);
+    transform-origin: bottom center;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.config-open .sidebar {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.sidebar-header {
+    margin-bottom: 32px;
+}
+
+.logo {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--apple-text-dark);
+}
+
+.logo span {
+    font-weight: 400;
+    color: var(--apple-text-gray);
+}
+
+.subtitle {
+    font-size: 0.85rem;
+    color: var(--apple-text-gray);
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.global-state-panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    padding-right: 12px;
+    padding-bottom: 20px;
+}
+
+/* Custom Scrollbar - Mac Style */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.15); 
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.25); 
+}
+
+.panel-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--apple-text-gray);
+    margin-bottom: 8px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    color: var(--apple-text-dark);
+    font-weight: 600;
+    padding-left: 2px;
+}
+
+.input-wrapper {
+    position: relative;
+    border-radius: 0;
+    background: var(--apple-input-bg);
+    border: 2px solid transparent; /* Hard border */
+    transition: var(--transition);
+    overflow: hidden;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+
+.input-wrapper:focus-within {
+    background: var(--surface-color);
+    border-color: var(--apple-blue);
+}
+
+.input-wrapper input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--apple-text-dark);
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    padding: 14px 16px;
+    outline: none;
+    font-weight: 500;
+}
+
+.input-wrapper input::placeholder {
+    color: var(--apple-text-gray);
+    opacity: 0.6;
+    font-weight: 400;
+}
+
+.sidebar-footer {
+    padding-top: 24px;
+}
+
+.btn-apple-outline {
+    width: 100%;
+    background: transparent;
+    color: var(--apple-text-dark);
+    border: 2px solid var(--apple-text-dark);
+    border-radius: 0;
+    padding: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    box-shadow: 4px 4px 0px var(--apple-text-dark);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+
+.btn-apple-outline:hover {
+    background: var(--apple-text-dark);
+    color: var(--surface-color);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--apple-text-dark);
+    border-color: var(--apple-text-dark);
+}
+
+/* --- MAIN CONTENT --- */
+.main-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    overflow-y: visible; /* no longer inner scroll */
+    padding: 48px 40px;
+}
+
+.main-header {
+    margin-bottom: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    padding-top: 12px;
+    padding-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-light);
+    background: rgba(251, 251, 253, 0.85);
+    backdrop-filter: blur(20px);
+}
+
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    user-select: none;
+}
+
+.brand-icon {
+    width: 96px; /* Massive branding */
+    height: 96px;
+    border-radius: 0;
+    mix-blend-mode: multiply; /* Ensures pure white icon background becomes literally transparent on our off-white app bg */
+}
+
+.logo-main {
+    font-size: 2.5rem; /* Supersized to match */
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    color: var(--apple-text-dark);
+}
+.logo-main span {
+    font-weight: 400;
+    color: var(--apple-text-gray);
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    max-width: 640px;
+    background: var(--surface-color);
+    border-radius: 0;
+    padding: 6px 20px;
+    filter: drop-shadow(6px 6px 0px rgba(10, 25, 47, 0.1));
+    border: none; /* Borders conflict with clip-path edges visually */
+    transition: all 0.2s ease-out;
+    clip-path: polygon(
+        0% 2%, 99% 0%, 
+        100% 98%, calc(100% - 12px) 100%, 
+        1% 99%, 0% calc(100% - 6px)
+    );
+}
+
+.search-container:focus-within {
+    filter: drop-shadow(8px 8px 0px var(--apple-blue));
+    transform: translate(-2px, -2px);
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--apple-text-gray);
+    margin-right: 14px;
+}
+
+.search-container input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    padding: 16px 0;
+    color: var(--apple-text-dark);
+    font-family: var(--font-ui);
+    font-size: 1.1rem;
+    font-weight: 500;
+    outline: none;
+}
+
+.search-container input::placeholder {
+    color: var(--apple-text-gray);
+    font-weight: 400;
+}
+
+/* --- ARSENAL / TOOL CARDS --- */
+.arsenal-container {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    padding-bottom: 120px;
+}
+
+.category-section {
+    animation: simpleFade 0.6s ease-out backwards;
+}
+
+@keyframes simpleFade {
+    0% { opacity: 0; }
+}
+
+.category-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--apple-text-dark);
+    margin-bottom: 32px;
+    letter-spacing: -0.04em;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    gap: 32px;
+}
+
+/* Pure Apple Hardware Style Card -> Crumpled Origami Geometry */
+.tool-card {
+    background: var(--surface-color);
+    border-radius: 0;
+    padding: 36px;
+    transition: all 0.2s ease-out;
+    filter: drop-shadow(8px 8px 0px rgba(10, 25, 47, 0.05));
+    border: none;
+    animation: cardEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: var(--stagger-delay, 0ms);
+    position: relative;
+    /* Varied clip-paths applied via pure CSS :nth-child down below */
+}
+
+/* Base Origami Crease Plane */
+.tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    pointer-events: none;
+    z-index: 0;
+    /* Varied crease gradients applied via CSS :nth-child down below */
+}
+
+/* --- THE ORIGAMI VARIATIONS (pseudo-random facets based on nth-card) --- */
+
+/* V1: Right Side Fold (Standard) */
+.tool-card:nth-child(4n+1) {
+    clip-path: polygon(1% 0%, 98% 1%, 100% 12%, 99% 98%, calc(100% - 32px) 100%, 2% 99%, 0% calc(100% - 10px), 0% 2%);
+}
+.tool-card:nth-child(4n+1)::before {
+    background: linear-gradient(135deg, rgba(255,255,255,0.2) 40%, rgba(10,25,47,0.05) 41%, rgba(10,25,47,0.08) 60%, rgba(255,255,255,0.1) 61%);
+}
+.tool-card:nth-child(4n+1):hover {
+    filter: drop-shadow(12px 12px 0px var(--apple-blue));
+    transform: translate(-4px, -4px);
+}
+
+/* V2: Top-Left Slash, Horizontal Folds */
+.tool-card:nth-child(4n+2) {
+    clip-path: polygon(0% 10%, 12% 0%, 100% 1%, 98% 99%, 2% 100%, 0% 90%);
+}
+.tool-card:nth-child(4n+2)::before {
+    background: linear-gradient(45deg, rgba(255,255,255,0.2) 50%, rgba(10,25,47,0.06) 51%, rgba(10,25,47,0.03) 80%, rgba(255,255,255,0.1) 81%);
+}
+.tool-card:nth-child(4n+2):hover {
+    filter: drop-shadow(-10px 10px 0px var(--apple-blue));
+    transform: translate(4px, -4px); /* Shadow drops bottom-left, box goes top-right */
+}
+
+/* V3: Aggressive Slant, Steep Vertical Fold */
+.tool-card:nth-child(4n+3) {
+    clip-path: polygon(0% 0%, 95% 3%, 100% 95%, 95% 100%, 2% 98%);
+}
+.tool-card:nth-child(4n+3)::before {
+    background: linear-gradient(100deg, rgba(255,255,255,0.25) 30%, rgba(10,25,47,0.09) 31%, rgba(10,25,47,0.04) 70%, rgba(255,255,255,0.2) 71%);
+}
+.tool-card:nth-child(4n+3):hover {
+    filter: drop-shadow(10px -10px 0px var(--apple-blue));
+    transform: translate(-4px, 4px); /* Shadow drops top-right, box goes bottom-left */
+}
+
+/* V4: Heavy Bottom Angle, Deep Cut */
+.tool-card:nth-child(4n+4) {
+    clip-path: polygon(2% 1%, 100% 0%, 99% calc(100% - 40px), calc(100% - 40px) 100%, 0% 98%);
+}
+.tool-card:nth-child(4n+4)::before {
+    background: linear-gradient(160deg, rgba(255,255,255,0.1) 20%, rgba(10,25,47,0.04) 21%, rgba(10,25,47,0.08) 40%, rgba(255,255,255,0.15) 41%);
+}
+.tool-card:nth-child(4n+4):hover {
+    filter: drop-shadow(-12px -10px 0px var(--apple-blue));
+    transform: translate(6px, 5px); /* Shadow drops top-left, box goes bottom-right */
+}
+
+/* Force text and components above the crease shadow */
+.tool-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes cardEntrance {
+    0% { opacity: 0; transform: translateY(40px); }
+}
+
+.tool-header {
+    margin-bottom: 32px;
+}
+
+.tool-name {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--apple-text-dark);
+    margin-bottom: 8px;
+    letter-spacing: -0.04em;
+}
+
+.tool-desc {
+    font-size: 1rem;
+    color: var(--apple-text-gray);
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+.command-block {
+    margin-bottom: 32px;
+}
+
+.command-block:last-child {
+    margin-bottom: 0;
+}
+
+.command-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--apple-text-dark);
+    margin-bottom: 12px;
+}
+
+.command-snippet-container {
+    position: relative;
+    /* High contrast dark terminal block for tools */
+    background: var(--code-bg);
+    border-radius: 0;
+    padding: 20px 64px 20px 20px;
+    display: flex;
+    align-items: center;
+    border: none;
+    clip-path: polygon(
+        0% 0%, 100% 1%, 
+        99% calc(100% - 20px), calc(100% - 20px) 100%, 
+        1% 99%, 0% calc(100% - 4px)
+    );
+}
+
+.command-text {
+    font-family: var(--font-code);
+    font-size: 0.95rem;
+    color: var(--code-text);
+    line-height: 1.6;
+    word-break: break-all;
+    font-weight: 500;
+}
+
+/* Flag Descriptions */
+.command-flags {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: #E2E8F0; /* Slightly darker than card surface to inset */
+    border-radius: 0;
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid rgba(0,0,0,0.06);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+
+.flag-row {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+}
+
+.flag-name {
+    font-family: var(--font-code);
+    font-weight: 600;
+    color: var(--apple-text-dark);
+    font-size: 0.8rem;
+    background: rgba(0,0,0,0.06);
+    padding: 4px 8px;
+    border-radius: 0;
+    white-space: nowrap;
+}
+
+.flag-desc {
+    color: #6E6E73;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+/* Dynamic Variables inside dark code block */
+.dynamic-var {
+    color: #38BDF8; /* Aquatic Neon Cyan */
+    font-weight: 600;
+}
+
+.missing-var {
+    color: #86868B;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.copy-btn {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--code-text);
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    padding: 8px 16px;
+    border-radius: 0;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: -0.01em;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+
+.copy-btn::after {
+    display: none;
+}
+
+.copy-btn:hover {
+    background: var(--code-text);
+    color: var(--code-bg);
+}
+
+.copy-btn:active {
+    transform: translateY(-50%) translate(2px, 2px);
+}
+
+.copy-btn.copied {
+    background: #38BDF8; /* Aquatic Cyan Success instead of apple green */
+    color: #0A0A0B;
+}
+
+/* Apple-style floating notification - Simple and elegant */
+.notification {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(30px) scale(0.95);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0,0,0,0.05);
+    color: var(--apple-text-dark);
+    padding: 16px 32px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 100;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notification::before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #34C759;
+    border-radius: 50%;
+}
+
+.notification.show {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+}
+
+@media (max-width: 1200px) {
+    .tools-grid { grid-template-columns: 1fr; }
+}
