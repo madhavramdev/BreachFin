@@ -52,6 +52,93 @@ body {
     flex-direction: row;
 }
 
+/* ===================================================
+   Apple-theme HTML compatibility
+   These elements exist in index.html but not in
+   index_matrix.html. When the Konami code swaps the
+   stylesheet, we must hide or restyle them.
+   =================================================== */
+
+.apple-bg-effect,
+.bg-watermark,
+.bg-watermark-1,
+.bg-watermark-2 {
+    display: none !important;
+}
+
+.brand-icon {
+    width: 48px;
+    height: 48px;
+    filter: invert(1) sepia(100%) hue-rotate(80deg) saturate(400%) contrast(200%);
+    border: 1px dashed var(--matrix-dim);
+    padding: 4px;
+}
+
+.logo-main {
+    font-family: var(--font-code);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-main);
+    text-transform: uppercase;
+}
+
+.logo-main span {
+    color: var(--matrix-primary);
+}
+
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.frosted-glass {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.btn-apple-outline {
+    background: transparent;
+    border: 1px solid var(--matrix-dim);
+    color: var(--text-main);
+    padding: 12px;
+    cursor: pointer;
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    transition: var(--transition);
+    border-radius: 0;
+    box-shadow: none;
+    clip-path: none;
+    width: 100%;
+    text-align: left;
+}
+
+.btn-apple-outline:hover {
+    background: var(--matrix-primary);
+    color: var(--bg-dark);
+    border-color: var(--matrix-primary);
+    font-weight: bold;
+    transform: none;
+    box-shadow: none;
+}
+
+.apple-search {
+    filter: none;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+
+.search-icon {
+    color: var(--matrix-dim);
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
 /* Side panel */
 .config-overlay {
     position: static;
