@@ -7,28 +7,30 @@ const DEFAULT_STATE = {
     username: ''
 };
 
-// Global loaded data
+const STORAGE_KEY = 'breachFin_state';
+
+// Data cache
 let arsenalData = null;
 
-// ====== INITIALIZATION ======
+// Init
 document.addEventListener('DOMContentLoaded', () => {
     initApp();
 });
 
 async function initApp() {
-    // 1. Load state from LocalStorage
+    // Load state
     loadState();
     
-    // 2. Fetch Tools JSON
+    // Load data
     try {
         const response = await fetch('data/tools.json');
         if (!response.ok) throw new Error('Failed to load JSON');
         arsenalData = await response.json();
         
-        // 3. Render the UI
+        // Render view
         renderArsenal(arsenalData);
         
-        // 4. Setup Event Listeners
+        // Bind events
         setupEventListeners();
         
     } catch (error) {
@@ -44,12 +46,12 @@ async function initApp() {
     }
 }
 
-// ====== STATE MANAGEMENT ======
+// State
 function loadState() {
-    const saved = localStorage.getItem('cyberArsenal_state');
+    const saved = localStorage.getItem(STORAGE_KEY);
     const state = saved ? JSON.parse(saved) : DEFAULT_STATE;
     
-    // Populate the inputs
+    // Fill inputs
     Object.keys(DEFAULT_STATE).forEach(key => {
         const el = document.getElementById(key);
         if (el) {
@@ -66,21 +68,21 @@ function saveState() {
             state[key] = el.value.trim();
         }
     });
-    localStorage.setItem('cyberArsenal_state', JSON.stringify(state));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     return state;
 }
 
-// ====== DOM RENDERING ======
+// Render
 function renderArsenal(data, searchQuery = '') {
     const container = document.getElementById('arsenal-container');
-    container.innerHTML = ''; // Clear loading
+    container.innerHTML = ''; // Clear state
     
     if (!data || !data.categories) return;
     
-    const state = saveState(); // get current state from inputs
+    const state = saveState(); // Current state
     
     data.categories.forEach((cat, index) => {
-        // Filter logic based on search
+        // Filter items
         const filteredTools = cat.tools.filter(tool => {
             if (!searchQuery) return true;
             const q = searchQuery.toLowerCase();
@@ -91,7 +93,7 @@ function renderArsenal(data, searchQuery = '') {
         
         if (filteredTools.length === 0) return;
         
-        // Build Category Section
+        // Build section
         const catSection = document.createElement('section');
         catSection.className = 'category-section';
         
@@ -107,22 +109,22 @@ function renderArsenal(data, searchQuery = '') {
             const card = document.createElement('div');
             card.className = 'tool-card';
             
-            // Stagger delay based on position across everything
+            // Delay offset
             card.style.setProperty('--stagger-delay', `${(index * 100) + (tIndex * 80)}ms`);
             
             let commandsHTML = '';
             tool.commands.forEach((cmd) => {
                 
-                // Interpolate variables for DISPLAY (adds span tags for styling)
-                let renderedSyntax = escapeHtml(cmd.syntax); // Escape original first
+                // Render text
+                let renderedSyntax = escapeHtml(cmd.syntax); // Escape source
                 
-                // Interpolate variables for COPY (pure text)
+                // Copy text
                 let copyText = cmd.syntax;
                 
                 Object.keys(DEFAULT_STATE).forEach(key => {
                     const rawValue = state[key];
                     
-                    // Display version
+                    // View replace
                     const displayRegex = new RegExp(`{${key}}`, 'g');
                     if (rawValue) {
                         renderedSyntax = renderedSyntax.replace(displayRegex, `<span class="dynamic-var">${escapeHtml(rawValue)}</span>`);
@@ -130,7 +132,7 @@ function renderArsenal(data, searchQuery = '') {
                         renderedSyntax = renderedSyntax.replace(displayRegex, `<span class="missing-var">{${key}}</span>`);
                     }
                     
-                // Copy version
+                // Copy replace
                 const copyRegex = new RegExp(`{${key}}`, 'g');
                 copyText = copyText.replace(copyRegex, rawValue || `{${key}}`);
             });
@@ -173,7 +175,7 @@ function renderArsenal(data, searchQuery = '') {
         container.appendChild(catSection);
     });
     
-    // Show empty state if nothing matches search
+    // Empty state
     if (container.children.length === 0) {
         container.innerHTML = `
             <div style="color: var(--text-muted); font-family: var(--font-code); padding: 40px; text-align: center;">
@@ -183,21 +185,21 @@ function renderArsenal(data, searchQuery = '') {
     }
 }
 
-// ====== EVENT LISTENERS ======
+// Events
 function setupEventListeners() {
-    // 1. Input fields trigger immediate re-render
+    // Input sync
     Object.keys(DEFAULT_STATE).forEach(key => {
         const el = document.getElementById(key);
         if (el) {
             el.addEventListener('input', () => {
-                saveState(); // Update localStorage
+                saveState(); // Save state
                 const searchQ = document.getElementById('search-tools').value;
                 renderArsenal(arsenalData, searchQ);
             });
         }
     });
     
-    // 2. Search box (with Easter Eggs)
+    // Search input
     document.getElementById('search-tools').addEventListener('input', (e) => {
         const val = e.target.value.toLowerCase().trim();
         
@@ -215,28 +217,28 @@ function setupEventListeners() {
         }
     });
     
-    // 3. Reset State
+    // Reset state
     document.getElementById('reset-state').addEventListener('click', () => {
-        localStorage.removeItem('cyberArsenal_state');
+        localStorage.removeItem(STORAGE_KEY);
         Object.keys(DEFAULT_STATE).forEach(key => {
             const el = document.getElementById(key);
             if (el) el.value = '';
         });
         
-        // Ensure search value is kept or cleared? Keep it.
+        // Keep search
         const searchInput = document.getElementById('search-tools');
         renderArsenal(arsenalData, searchInput ? searchInput.value : '');
         showNotification("Environment Reset Complete.");
     });
     
-    // 4. Copy to Clipboard implementation via Event Delegation
+    // Copy action
     document.getElementById('arsenal-container').addEventListener('click', (e) => {
         const btn = e.target.closest('.copy-btn');
         if (!btn) return;
         
         const textToCopy = btn.getAttribute('data-clipboard');
         navigator.clipboard.writeText(textToCopy).then(() => {
-            // Visual feedback
+            // Button state
             btn.classList.add('copied');
             btn.innerHTML = 'Copied';
             
@@ -249,7 +251,7 @@ function setupEventListeners() {
         });
     });
 
-    // 5. Konami Code Easter Egg (Theme Switcher)
+    // Theme toggle
     const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
     let konamiIndex = 0;
     document.addEventListener('keydown', (e) => {
@@ -271,25 +273,25 @@ function setupEventListeners() {
         }
     });
 
-    // 6. Floating Config Toggle
+    // Panel toggle
     const fabButton = document.getElementById('config-fab');
     const configOverlay = document.getElementById('config-overlay');
     
     if (fabButton && configOverlay) {
         fabButton.addEventListener('click', () => {
             document.body.classList.add('config-open');
-            // Auto-focus first input for convenience
+            // Focus input
             setTimeout(() => document.getElementById('target_ip').focus(), 100);
         });
         
         configOverlay.addEventListener('click', (e) => {
-            // Close only if clicking the blur background directly, not the panel inside it
+            // Close overlay
             if (e.target === configOverlay) {
                 document.body.classList.remove('config-open');
             }
         });
         
-        // Escape to close
+        // Escape close
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && document.body.classList.contains('config-open')) {
                 document.body.classList.remove('config-open');
@@ -298,7 +300,7 @@ function setupEventListeners() {
     }
 }
 
-// ====== UTILS ======
+// Utils
 function escapeHtml(unsafe) {
     if (!unsafe) return "";
     return String(unsafe)
@@ -321,7 +323,7 @@ function showNotification(message) {
     
     el.textContent = message;
     
-    // Force reflow
+    // Reflow
     void el.offsetWidth;
     el.classList.add('show');
     

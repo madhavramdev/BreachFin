@@ -1,18 +1,21 @@
 :root {
-    --bg-dark: #000000; /* Pure black for that deep cyber void */
+    --bg-dark: #000000;
+    /* Panel color */
     --panel-bg: #050505;
-    --panel-border: rgba(0, 255, 65, 0.4); 
-    
-    /* The Matrix Green Palette */
-    --matrix-primary: #00FF41; 
+    --panel-border: rgba(0, 255, 65, 0.4);
+
+    /* Accent colors */
+    --matrix-primary: #00FF41;
     --matrix-dim: #008F11;
     --matrix-dark: #003B00;
-    
-    --text-main: #b2c9ab; /* Slightly desaturated green-grey for body to not blind */
+
+    --text-main: #b2c9ab;
+    /* Muted text */
     --text-muted: #5e7358;
-    
-    --font-code: 'Fira Code', 'Courier New', monospace; /* Force monospace everywhere */
-    
+
+    --font-code: 'Fira Code', 'Courier New', monospace;
+    /* Code font */
+
     --transition: all 0.2s ease-out;
 }
 
@@ -22,7 +25,7 @@
     padding: 0;
 }
 
-/* Subtle CRT scanline overlay */
+/* Overlay */
 body::before {
     content: " ";
     display: block;
@@ -40,7 +43,8 @@ body::before {
 body {
     background-color: var(--bg-dark);
     color: var(--text-main);
-    font-family: var(--font-code); /* Enforce tech aesthetic everywhere */
+    font-family: var(--font-code);
+    /* Code font */
     height: 100vh;
     overflow: hidden;
     position: relative;
@@ -48,7 +52,7 @@ body {
     flex-direction: row;
 }
 
-/* Neutralize the new HTML overlay structure back into a static column */
+/* Side panel */
 .config-overlay {
     position: static;
     width: 320px;
@@ -74,7 +78,7 @@ body {
     width: auto;
 }
 
-/* --- SIDEBAR --- */
+/* Sidebar */
 .sidebar {
     width: 100%;
     height: 100%;
@@ -82,7 +86,8 @@ body {
     opacity: 1 !important;
     background: var(--bg-dark);
     border: none;
-    border-right: 1px dashed var(--matrix-dim); /* Industrial dashed border instead of solid */
+    border-right: 1px dashed var(--matrix-dim);
+    /* Right border */
     border-radius: 0;
     box-shadow: none;
     display: flex;
@@ -112,7 +117,9 @@ body {
 }
 
 @keyframes blink {
-    50% { opacity: 0; }
+    50% {
+        opacity: 0;
+    }
 }
 
 .subtitle {
@@ -138,20 +145,24 @@ body {
     padding-right: 8px;
 }
 
-/* Custom Scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
     width: 4px;
     height: 4px;
 }
+
 ::-webkit-scrollbar-track {
-    background: var(--bg-dark); 
+    background: var(--bg-dark);
 }
+
 ::-webkit-scrollbar-thumb {
-    background: var(--matrix-dim); 
-    border-radius: 0; /* Square scrollbar */
+    background: var(--matrix-dim);
+    border-radius: 0;
+    /* Square thumb */
 }
+
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--matrix-primary); 
+    background: var(--matrix-primary);
 }
 
 .panel-title {
@@ -184,13 +195,14 @@ body {
     display: flex;
     align-items: center;
     background: transparent;
-    border-bottom: 1px solid var(--matrix-dim); /* Underline only, no boxes */
+    border-bottom: 1px solid var(--matrix-dim);
+    /* Bottom border */
     transition: var(--transition);
 }
 
 .input-wrapper:focus-within {
     border-bottom: 2px solid var(--matrix-primary);
-    background: linear-gradient(90deg, rgba(0,255,65,0.05) 0%, transparent 100%);
+    background: linear-gradient(90deg, rgba(0, 255, 65, 0.05) 0%, transparent 100%);
 }
 
 .prompt-arrow {
@@ -227,7 +239,8 @@ body {
     font-size: 0.8rem;
     text-transform: uppercase;
     transition: var(--transition);
-    border-radius: 0; /* No curved edges */
+    border-radius: 0;
+    /* Sharp corners */
     text-align: left;
 }
 
@@ -238,7 +251,7 @@ body {
     font-weight: bold;
 }
 
-/* --- MAIN CONTENT --- */
+/* Main content */
 .main-content {
     flex-grow: 1;
     display: flex;
@@ -262,7 +275,7 @@ body {
 .brand-icon {
     width: 64px;
     height: 64px;
-    /* Invert flips white to black, dark gray shield to light string, sepia/hue tints it neon green */
+    /* Icon filter */
     filter: invert(1) sepia(100%) hue-rotate(80deg) saturate(400%) contrast(200%);
     border: 1px dashed var(--matrix-dim);
     padding: 6px;
@@ -275,11 +288,12 @@ body {
     max-width: 600px;
     border: 1px solid var(--matrix-dim);
     background: var(--bg-dark);
-    padding: 2px; /* For the cli-box feel */
+    padding: 2px;
+    /* Box style */
     position: relative;
 }
 
-/* Clip-path corner styling for search bar to make it unique */
+/* Search shape */
 .search-container {
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
 }
@@ -303,7 +317,7 @@ body {
     outline: none;
 }
 
-/* --- ARSENAL / TOOL CARDS --- */
+/* Tool cards */
 .arsenal-container {
     display: flex;
     flex-direction: column;
@@ -317,8 +331,15 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .category-title {
@@ -330,9 +351,16 @@ body {
     display: inline-block;
 }
 
-/* Tech category decorative styling */
-.category-title::before { content: "[ "; color: var(--text-muted); }
-.category-title::after { content: " ]"; color: var(--text-muted); }
+/* Title marks */
+.category-title::before {
+    content: "[ ";
+    color: var(--text-muted);
+}
+
+.category-title::after {
+    content: " ]";
+    color: var(--text-muted);
+}
 
 .tools-grid {
     display: grid;
@@ -342,10 +370,11 @@ body {
 
 .tool-card {
     background: var(--panel-bg);
-    border-left: 3px solid var(--matrix-primary); /* Industrial left border */
-    border-top: 1px solid rgba(0,255,65,0.1);
-    border-right: 1px solid rgba(0,255,65,0.1);
-    border-bottom: 1px solid rgba(0,255,65,0.1);
+    border-left: 3px solid var(--matrix-primary);
+    /* Left border */
+    border-top: 1px solid rgba(0, 255, 65, 0.1);
+    border-right: 1px solid rgba(0, 255, 65, 0.1);
+    border-bottom: 1px solid rgba(0, 255, 65, 0.1);
     padding: 28px;
     transition: var(--transition);
     position: relative;
@@ -408,10 +437,10 @@ body {
 
 .command-snippet-container:hover {
     border-color: var(--matrix-primary);
-    box-shadow: 0 0 10px rgba(0,255,65,0.1);
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
 }
 
-/* Pseudo element to create a small corner cut on the command box */
+/* Corner cut */
 .command-snippet-container::after {
     content: '';
     position: absolute;
@@ -423,16 +452,17 @@ body {
 
 .command-text {
     font-size: 0.95rem;
-    color: #e2e8f0; 
+    color: #e2e8f0;
     line-height: 1.5;
     word-break: break-all;
 }
 
-/* Dynamic Variables */
+/* Dynamic values */
 .dynamic-var {
     color: var(--matrix-primary);
     background: rgba(0, 255, 65, 0.1);
-    padding: 0 4px; /* Give it a terminal highlight feel */
+    padding: 0 4px;
+    /* Highlight */
 }
 
 .missing-var {
@@ -466,7 +496,7 @@ body {
     color: var(--bg-dark);
 }
 
-/* Notifications */
+/* Notification */
 .notification {
     position: fixed;
     bottom: 30px;
@@ -488,7 +518,9 @@ body {
     opacity: 1;
 }
 
-/* Responsive Grid */
+/* Responsive grid */
 @media (max-width: 1200px) {
-    .tools-grid { grid-template-columns: 1fr; }
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
 }

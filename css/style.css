@@ -1,20 +1,20 @@
 :root {
-    /* Orca Minimalist Aesthetic */
+    /* Base colors */
     --bg-light: #F8FAFC; 
-    --surface-color: #F1F5F9; /* Sleek cool grey to make 3D folds visible */
+    --surface-color: #F1F5F9; /* Surface color */
     
-    /* Typography Colors */
+    /* Text colors */
     --apple-text-dark: #0A0A0B; 
     --apple-text-gray: #64748B;
     --apple-text-light: #F1F5F9;
     
-    /* UI Elements */
+    /* UI colors */
     --apple-border: rgba(10, 10, 11, 0.06);
     --apple-input-bg: #F1F5F9;
     --apple-blue: #0A192F; 
     --apple-blue-hover: #112240;
     
-    /* Code Blocks */
+    /* Code colors */
     --code-bg: #0A0A0B; 
     --code-text: #F8FAFC;
     
@@ -43,15 +43,15 @@ body {
 }
 
 .apple-bg-effect {
-    display: none; /* No artificial backgrounds, pure space */
+    display: none; /* Hidden layer */
 }
 
-/* --- Ambient Geometry Watermarks --- */
+/* Watermarks */
 .bg-watermark {
     position: fixed;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.02; /* Incredibly faint stealth watermark */
+    opacity: 0.12; /* Layer opacity */
     mix-blend-mode: multiply;
 }
 
@@ -69,7 +69,7 @@ body {
 .bg-watermark-2 {
     bottom: -10%;
     left: -15%;
-    transform: rotate(-20deg);
+    transform: rotate(15deg) scaleX(-1); /* Flipped image */
 }
 
 .bg-watermark-2 img {
@@ -85,7 +85,7 @@ body {
     transition: filter 0.5s ease-in-out, transform 1s ease-in-out;
 }
 
-/* --- CONFIG OVERLAY --- */
+/* Overlay */
 .config-overlay {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
@@ -111,7 +111,7 @@ body.config-open {
     overflow: hidden;
 }
 
-/* --- FAB (Floating Action Button) --- */
+/* Toggle button */
 .config-fab {
     position: fixed;
     bottom: 40px;
@@ -156,7 +156,7 @@ body.config-open .config-fab {
     pointer-events: none;
 }
 
-/* Barrel Roll Easter Egg */
+/* Roll effect */
 .barrel-roll {
     animation: roll 1.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -166,7 +166,7 @@ body.config-open .config-fab {
     100% { transform: rotate(360deg); }
 }
 
-/* --- SIDEBAR AS FLOATING MODAL --- */
+/* Sidebar */
 .sidebar {
     width: 400px;
     max-height: 80vh;
@@ -183,7 +183,7 @@ body.config-open .config-fab {
         -1% 99%, 2% calc(100% - 20px)
     );
     
-    /* Animation origin from bottom right */
+    /* Transform origin */
     transform: translateY(40px) scale(0.9);
     transform-origin: bottom center;
     opacity: 0;
@@ -228,7 +228,7 @@ body.config-open .sidebar {
     padding-bottom: 20px;
 }
 
-/* Custom Scrollbar - Mac Style */
+/* Scrollbar */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -270,7 +270,7 @@ body.config-open .sidebar {
     position: relative;
     border-radius: 0;
     background: var(--apple-input-bg);
-    border: 2px solid transparent; /* Hard border */
+    border: 2px solid transparent; /* Border */
     transition: var(--transition);
     overflow: hidden;
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
@@ -326,13 +326,13 @@ body.config-open .sidebar {
     border-color: var(--apple-text-dark);
 }
 
-/* --- MAIN CONTENT --- */
+/* Main content */
 .main-content {
     max-width: 1400px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    overflow-y: visible; /* no longer inner scroll */
+    overflow-y: visible; /* Outer scroll */
     padding: 48px 40px;
 }
 
@@ -359,14 +359,14 @@ body.config-open .sidebar {
 }
 
 .brand-icon {
-    width: 96px; /* Massive branding */
+    width: 96px; /* Icon size */
     height: 96px;
     border-radius: 0;
-    mix-blend-mode: multiply; /* Ensures pure white icon background becomes literally transparent on our off-white app bg */
+    mix-blend-mode: multiply; /* Blend mode */
 }
 
 .logo-main {
-    font-size: 2.5rem; /* Supersized to match */
+    font-size: 2.5rem; /* Text size */
     font-weight: 800;
     letter-spacing: -0.05em;
     color: var(--apple-text-dark);
@@ -384,7 +384,7 @@ body.config-open .sidebar {
     border-radius: 0;
     padding: 6px 20px;
     filter: drop-shadow(6px 6px 0px rgba(10, 25, 47, 0.1));
-    border: none; /* Borders conflict with clip-path edges visually */
+    border: none; /* No border */
     transition: all 0.2s ease-out;
     clip-path: polygon(
         0% 2%, 99% 0%, 
@@ -422,7 +422,7 @@ body.config-open .sidebar {
     font-weight: 400;
 }
 
-/* --- ARSENAL / TOOL CARDS --- */
+/* Tool cards */
 .arsenal-container {
     display: flex;
     flex-direction: column;
@@ -452,7 +452,7 @@ body.config-open .sidebar {
     gap: 32px;
 }
 
-/* Pure Apple Hardware Style Card -> Crumpled Origami Geometry */
+/* Card shape */
 .tool-card {
     background: var(--surface-color);
     border-radius: 0;
@@ -463,22 +463,22 @@ body.config-open .sidebar {
     animation: cardEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
     animation-delay: var(--stagger-delay, 0ms);
     position: relative;
-    /* Varied clip-paths applied via pure CSS :nth-child down below */
+    /* Shape variant */
 }
 
-/* Base Origami Crease Plane */
+/* Card layer */
 .tool-card::before {
     content: '';
     position: absolute;
     top: 0; right: 0; bottom: 0; left: 0;
     pointer-events: none;
     z-index: 0;
-    /* Varied crease gradients applied via CSS :nth-child down below */
+    /* Gradient variant */
 }
 
-/* --- THE ORIGAMI VARIATIONS (pseudo-random facets based on nth-card) --- */
+/* Card variants */
 
-/* V1: Right Side Fold (Standard) */
+/* Variant 1 */
 .tool-card:nth-child(4n+1) {
     clip-path: polygon(1% 0%, 98% 1%, 100% 12%, 99% 98%, calc(100% - 32px) 100%, 2% 99%, 0% calc(100% - 10px), 0% 2%);
 }
@@ -490,7 +490,7 @@ body.config-open .sidebar {
     transform: translate(-4px, -4px);
 }
 
-/* V2: Top-Left Slash, Horizontal Folds */
+/* Variant 2 */
 .tool-card:nth-child(4n+2) {
     clip-path: polygon(0% 10%, 12% 0%, 100% 1%, 98% 99%, 2% 100%, 0% 90%);
 }
@@ -499,10 +499,10 @@ body.config-open .sidebar {
 }
 .tool-card:nth-child(4n+2):hover {
     filter: drop-shadow(-10px 10px 0px var(--apple-blue));
-    transform: translate(4px, -4px); /* Shadow drops bottom-left, box goes top-right */
+    transform: translate(4px, -4px); /* Hover offset */
 }
 
-/* V3: Aggressive Slant, Steep Vertical Fold */
+/* Variant 3 */
 .tool-card:nth-child(4n+3) {
     clip-path: polygon(0% 0%, 95% 3%, 100% 95%, 95% 100%, 2% 98%);
 }
@@ -511,10 +511,10 @@ body.config-open .sidebar {
 }
 .tool-card:nth-child(4n+3):hover {
     filter: drop-shadow(10px -10px 0px var(--apple-blue));
-    transform: translate(-4px, 4px); /* Shadow drops top-right, box goes bottom-left */
+    transform: translate(-4px, 4px); /* Hover offset */
 }
 
-/* V4: Heavy Bottom Angle, Deep Cut */
+/* Variant 4 */
 .tool-card:nth-child(4n+4) {
     clip-path: polygon(2% 1%, 100% 0%, 99% calc(100% - 40px), calc(100% - 40px) 100%, 0% 98%);
 }
@@ -523,10 +523,10 @@ body.config-open .sidebar {
 }
 .tool-card:nth-child(4n+4):hover {
     filter: drop-shadow(-12px -10px 0px var(--apple-blue));
-    transform: translate(6px, 5px); /* Shadow drops top-left, box goes bottom-right */
+    transform: translate(6px, 5px); /* Hover offset */
 }
 
-/* Force text and components above the crease shadow */
+/* Content layer */
 .tool-card > * {
     position: relative;
     z-index: 2;
@@ -572,7 +572,7 @@ body.config-open .sidebar {
 
 .command-snippet-container {
     position: relative;
-    /* High contrast dark terminal block for tools */
+    /* Code block */
     background: var(--code-bg);
     border-radius: 0;
     padding: 20px 64px 20px 20px;
@@ -595,11 +595,11 @@ body.config-open .sidebar {
     font-weight: 500;
 }
 
-/* Flag Descriptions */
+/* Flag rows */
 .command-flags {
     margin-top: 12px;
     padding: 14px 16px;
-    background: #E2E8F0; /* Slightly darker than card surface to inset */
+    background: #E2E8F0; /* Panel fill */
     border-radius: 0;
     font-size: 0.85rem;
     display: flex;
@@ -632,9 +632,9 @@ body.config-open .sidebar {
     font-weight: 400;
 }
 
-/* Dynamic Variables inside dark code block */
+/* Dynamic values */
 .dynamic-var {
-    color: #38BDF8; /* Aquatic Neon Cyan */
+    color: #38BDF8; /* Accent color */
     font-weight: 600;
 }
 
@@ -676,11 +676,11 @@ body.config-open .sidebar {
 }
 
 .copy-btn.copied {
-    background: #38BDF8; /* Aquatic Cyan Success instead of apple green */
+    background: #38BDF8; /* Success color */
     color: #0A0A0B;
 }
 
-/* Apple-style floating notification - Simple and elegant */
+/* Notification */
 .notification {
     position: fixed;
     bottom: 40px;
