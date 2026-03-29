@@ -123,6 +123,21 @@
               "flags": {
                 "-x": "Display all headers, sections, and symbol table entries."
               }
+            },
+            {
+              "title": "List Symbol Table",
+              "syntax": "objdump -t ./test-program",
+              "flags": {
+                "-t": "Display the symbol table with addresses and types."
+              }
+            },
+            {
+              "title": "Disassemble with C++ Demangling",
+              "syntax": "objdump -d -C ./test-program",
+              "flags": {
+                "-d": "Disassemble all sections.",
+                "-C": "Demangle C++ symbol names for readability."
+              }
             }
           ]
         },
