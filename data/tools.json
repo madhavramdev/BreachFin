@@ -105,6 +105,28 @@
           ]
         },
         {
+          "name": "Objdump",
+          "description": "Disassembles ELF binaries and inspects sections. (Source: Exploitation Lab)",
+          "commands": [
+            {
+              "title": "Disassemble Program",
+              "syntax": "objdump -d ./test-program",
+              "flags": {
+                "-d": "Disassemble all sections.",
+                "-M intel": "Use Intel syntax for assembly output.",
+                "-S": "Intermix source code with disassembly when available."
+              }
+            },
+            {
+              "title": "Inspect ELF Headers",
+              "syntax": "objdump -x ./test-program",
+              "flags": {
+                "-x": "Display all headers, sections, and symbol table entries."
+              }
+            }
+          ]
+        },
+        {
           "name": "Syscall / Library Trace",
           "description": "strace/ltrace to monitor system and library calls during dynamic analysis.",
           "commands": [
