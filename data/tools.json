@@ -138,6 +138,14 @@
                 "-d": "Disassemble all sections.",
                 "-C": "Demangle C++ symbol names for readability."
               }
+            },
+            {
+              "title": "Disassemble Specific Section",
+              "syntax": "objdump -d -j .text ./test-program",
+              "flags": {
+                "-d": "Disassemble all sections.",
+                "-j": "Only display the specified section."
+              }
             }
           ]
         },
